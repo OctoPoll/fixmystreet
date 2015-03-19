@@ -1,0 +1,19 @@
+[% all_reports = on_map.merge(around_map) %]
+[% IF all_reports.size %]
+    <!-- TODO: Do we definitely want to slice the list here? -->
+    [% IF all_reports.size > 10; all_reports = all_reports.slice(0,9); END %]
+
+    [% FOREACH problem IN all_reports %]
+        [% UNLESS problem.title; problem = problem.problem; END %]
+        <li class="[% c.cobrand.pin_colour(problem) %]">
+            <a href="[% c.uri_for('/report', problem.id ) %]" class="[% problem.category %]">
+                <h3>[% problem.title | html %]</h3>
+                <p>Reported [%- prettify_dt( problem.confirmed, 1 ) %]</p>
+            </a>
+        </li>
+    [% END %]
+[% ELSE %]
+    <li class="empty">
+        <p>[% loc('There are no reports to show.') %]</p>
+    </li>
+[% END %]
